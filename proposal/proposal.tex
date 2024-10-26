@@ -15,7 +15,7 @@
 
 %% meta data
 
-\title{Proposal: Something Interesting}
+\title{Proposal: How to Get a Job in Data Science Using Data Science}
 \author{Melanie Desroches\\
   Department of Statistics\\
   University of Connecticut
@@ -26,14 +26,15 @@
 
 
 \paragraph{Introduction}
-Background about your research; touch the three questions to be addressed in an
-introduction; cite relevant refernces~\citep[e.g.,][]{dwivedi2017analysis}.
+
 
 As a senior in college, it is only natural that I have been considering what my career will look like post-graduation.
 As a result, I have been looking at job applications to see what employers are looking for in candidates and if I qualify. 
 It is very easy to get overwhelmed by all the skills and qualifications that you need to have in order to get the job that 
 you want. In this project, I’ll explore the different types of data science roles by clustering job postings based on skill 
-requirements and job types.
+requirements and job types. Using a dataset that consists of data science related job postings from Glassdoor, the goal is to
+identify natural groupings, such as data engineering, data analysis, and machine learning roles, based on the skills each type 
+of job requires.
 
 \paragraph{Specific Aims}
 Formulate your research question;
@@ -42,15 +43,20 @@ translate your research question into statistical/data science questions
 The goal of this project is to identify what factors employers are looking for in a candidate for a data science job.
 
 \paragraph{Data}
-The data set I will be using is based on job postings on Glassdoor. The data can be found on Kaggle. 
 
-\lipsum[3]
+The data set I will be using is based on job postings on Glassdoor. The data can be found on Kaggle. The dataset already has
+some initial cleaning done. The columns that will be of the most interest to me are Job Description (which is the full description
+on the job posting), python, excel, hadoop, spark, aws, tableau, big data (which are all boolean variables used to determine
+if it is a relevant skill to the job), and information about the company that is hiring.
+
 
 \paragraph{Research Design and Methods}
-What design or methods will you use?
-Cite relevant references~\citep[e.g.,][]{wild2004global}.
 
-To perform my analysis, I will be apply a clustering algorithm such as K-means or Hierarchical Clustering. 
+To perform my analysis, I will be apply a clustering algorithm such as K-means or Hierarchical Clustering. The first
+step will be processing and cleaning the dataset. This will involve looking for any missing values, removing any jobs 
+that seem irrelevant (meaning they do not involve data science), and dropping unnecessary columns. This step will also involve some 
+feature engineering. Using the job descriptions provided, skills can be pulled and turned into new columns. Once the data is 
+prepared, the appropriate clustering algorithm can be applied. Based on the results, data visualizations can then be generated.
 
 \paragraph{Discussion}
 What are the most challenge parts of the task?
