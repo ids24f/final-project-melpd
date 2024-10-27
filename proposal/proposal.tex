@@ -37,8 +37,6 @@ identify natural groupings, such as data engineering, data analysis, and machine
 of job requires.
 
 \paragraph{Specific Aims}
-Formulate your research question;
-translate your research question into statistical/data science questions
 
 The goal of this project is to identify what factors employers are looking for in a candidate for a data science job.
 There are different types of jobs in the realm of data science, such as data engineering, data analysis, machine learning 
@@ -61,12 +59,19 @@ To perform my analysis, I will be apply a clustering algorithm such as K-means o
 step will be processing and cleaning the dataset. This will involve looking for any missing values, removing any jobs 
 that seem irrelevant (meaning they do not involve data science), and dropping unnecessary columns. This step will also involve some 
 feature engineering. Using the job descriptions provided, skills can be pulled and turned into new columns. Once the data is 
-prepared, the appropriate clustering algorithm can be applied. Based on the results, data visualizations can then be generated.
+prepared, the appropriate clustering algorithm can be applied. Currenlty, I am considering using either K-Means Clustering, DBSCAN, or 
+Hierarchical clustering. Which clustering algorithm I use will depend on the shape of the data. Based on the results, data 
+visualizations can then be generated.
 
 \paragraph{Discussion}
-What are the most challenge parts of the task?
-What are the limitations of your work? What is your fall-back plan if
-something unexpected happens?
+
+
+The most challengings parts of the project will be selecting the best clustering technique.
+There are some limitations with respect to the data set. Since the data is being sourced from Kaggle, instead of collecting it 
+myself, I am trusting that the owners of the dataset have collected accurate information. I am not sure when the data was collected.
+If it was from a while ago, it is possible that the job market has since changed and the data is no longer relevant. Also, I am operating
+under the assumption that all of the job postings are legitamate and are not scam posts. If I am truely unsure about the quality of the
+data set, I could always try to scrape the information myself.
 
 
 \bibliography{../manuscript/ref}
