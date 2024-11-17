@@ -44,7 +44,7 @@ ds_jobs['is_data_scientist'] = ds_jobs['job_simp'].apply(lambda x: 1 if 'scienti
 from sklearn.linear_model import LogisticRegression
 
 # Features and target
-X = ds_jobs[soft_skills + technical_skills]
+X = ds_jobs[skill_columns]
 y = ds_jobs['is_data_scientist']
 
 # Fit logistic regression model
@@ -52,10 +52,28 @@ model = LogisticRegression()
 model.fit(X, y)
 
 # Get feature importance
-importance = pd.Series(model.coef_[0], index=soft_skills + technical_skills).sort_values(ascending=False)
+importance = pd.Series(model.coef_[0], index=skill_columns).sort_values(ascending=False)
 print("Feature importance for predicting 'Data Scientist' jobs:")
 print(importance)
 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
+# Features and target
+X = ds_jobs[skill_columns]
+y = ds_jobs['job_simp']  # Assume this column categorizes job titles
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Fit Random Forest model
+rf = RandomForestClassifier(random_state=42)
+rf.fit(X_train, y_train)
+
+# Feature importance
+importance = pd.Series(rf.feature_importances_, index=skill_columns).sort_values(ascending=False)
+print("Skill importance across different data science jobs:")
+print(importance)
 
 
 # evaluation
