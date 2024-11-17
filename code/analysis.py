@@ -10,7 +10,7 @@ print(ds_jobs.columns)
 
 # Example keyword lists
 soft_skills = ['communication', 'leadership', 'collaboration', 'teamwork', 'adapt', 'problem-solving', 'critical thinking']
-technical_skills = ['SQL', 'Java', 'C\+\+', 'Scala', 'Docker', 'Git', 'Linux', 'Matlab', 'Azure']
+technical_skills = ['SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure']
 
 # Add soft skill columns
 for skill in soft_skills:
@@ -39,7 +39,7 @@ print(skill_counts)
 # model
 
 # Create binary target variable
-ds_jobs['is_data_scientist'] = ds_jobs['job_simp'].apply(lambda x: 1 if 'scientist' in x.lower() else 0)
+ds_jobs['is_data_scientist'] = (ds_jobs['job_simp'] == 'data scientist').astype(int)
 
 from sklearn.linear_model import LogisticRegression
 
@@ -75,5 +75,16 @@ importance = pd.Series(rf.feature_importances_, index=skill_columns).sort_values
 print("Skill importance across different data science jobs:")
 print(importance)
 
+# Create a binary target for "Data Scientist" jobs
+ds_jobs['is_data_scientist'] = (ds_jobs['job_simp'] == 'data scientist').astype(int)
+
+# Fit a Random Forest for this binary classification
+rf_ds = RandomForestClassifier(random_state=42)
+rf_ds.fit(X, ds_jobs['is_data_scientist'])
+
+# Feature importance for "Data Scientist" roles
+importance_ds = pd.Series(rf_ds.feature_importances_, index=skill_columns).sort_values(ascending=False)
+print("Skill importance for Data Scientist roles:")
+print(importance_ds)
 
 # evaluation
