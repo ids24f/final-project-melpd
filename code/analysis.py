@@ -113,11 +113,32 @@ lr.fit(X_train, y_train)
 y_pred_lr = lr.predict(X_test)
 y_prob_lr = lr.predict_proba(X_test)[:, 1]  # Predicted probabilities for ROC-AUC
 
+# Extract coefficients
+coefficients = lr.coef_[0]  # For binary classification, take the first set of coefficients
+feature_importance_df_lr = pd.DataFrame({
+    'Feature': X.columns,
+    'Coefficient': coefficients
+}).sort_values(by='Coefficient', ascending=False)
+
+# Display coefficients
+print("Logistic Regression Coefficients:")
+print(feature_importance_df_lr)
+
 # Random Forest
 rf = RandomForestClassifier(random_state=42)
 rf.fit(X_train, y_train)
 y_pred_rf = rf.predict(X_test)
 y_prob_rf = rf.predict_proba(X_test)[:, 1]  # Predicted probabilities for ROC-AUC
+
+importances = rf.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': importances
+}).sort_values(by='Importance', ascending=False)
+
+# Display top features
+print("Random Forest Feature Importance:")
+print(feature_importance_df)
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report
 
@@ -161,5 +182,3 @@ plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
 plt.show()
-
-# evaluation
