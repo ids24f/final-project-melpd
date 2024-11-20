@@ -182,3 +182,33 @@ plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
 plt.show()
+
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+
+# Standardize features for k-means
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Perform k-means clustering
+kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans.fit(X_scaled)
+
+# Add cluster labels to the original dataset
+ds_jobs['Cluster'] = kmeans.labels_
+
+# Analyze cluster centroids
+centroids = pd.DataFrame(kmeans.cluster_centers_, columns=X.columns)
+print("Cluster Centroids:")
+print(centroids)
+
+# Examine how many jobs fall into each cluster
+print(ds_jobs['Cluster'].value_counts())
+
+# Visualization (if dimensionality reduction applied, e.g., PCA)
+import matplotlib.pyplot as plt
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=kmeans.labels_, cmap='viridis', alpha=0.5)
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], color='red', marker='X')
+plt.title("K-means Clustering")
+plt.show()
