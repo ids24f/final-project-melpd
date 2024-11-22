@@ -33,7 +33,12 @@ skill_counts = ds_jobs[skill_columns].sum()
 print(skill_counts)
 
 #print(ds_jobs.dtypes)
-# eda
+# Filter out 'manager' and 'director' rows
+ds_jobs = ds_jobs[~ds_jobs['job_simp'].isin(['manager', 'director'])]
+
+# Verify the updated dataset
+print(ds_jobs['job_simp'].value_counts())
+
 
 
 # model
@@ -182,7 +187,7 @@ plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
 plt.show()
-
+'''
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
@@ -212,3 +217,78 @@ plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=kmeans.labels_, cmap='viridis', al
 plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], color='red', marker='X')
 plt.title("K-means Clustering")
 plt.show()
+
+'''
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report, accuracy_score
+
+# Encode the target variable
+le = LabelEncoder()
+ds_jobs['job_simp_encoded'] = le.fit_transform(ds_jobs['job_simp'])
+
+# Define features (X) and target (y)
+X = ds_jobs[skill_columns]
+y = ds_jobs['job_simp_encoded']
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Random Forest
+rf = RandomForestClassifier(class_weight= 'balanced', random_state=42)
+rf.fit(X_train, y_train)
+
+# Predict on test data
+y_pred = rf.predict(X_test)
+
+# Evaluate
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# Decode predictions back to original labels if needed
+y_pred_labels = le.inverse_transform(y_pred)
+
+print(ds_jobs['job_simp'].unique())
+# Assuming your dataframe is named df and the column is 'job_simp'
+job_counts = ds_jobs['job_simp'].value_counts()
+
+print(job_counts)
+
+importances = rf.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': importances
+}).sort_values(by='Importance', ascending=False)
+
+# Display top features
+print("Random Forest Feature Importance:")
+print(feature_importance_df)
+
+
+from imblearn.over_sampling import SMOTE
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+
+# Step 3: Train a Random Forest classifier on the resampled data
+rf_classifier = RandomForestClassifier(class_weight= 'balanced',random_state=42)
+rf_classifier.fit(X_train_resampled, y_train_resampled)
+
+# Step 4: Make predictions on the test set
+y_pred = rf_classifier.predict(X_test)
+
+# Step 5: Evaluate the model's performance
+print('SMOTE')
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+importances = rf_classifier.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': importances
+}).sort_values(by='Importance', ascending=False)
+
+# Display top features
+print("Random Forest (SMOTE) Feature Importance:")
+print(feature_importance_df)
