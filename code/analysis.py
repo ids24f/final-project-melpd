@@ -9,8 +9,8 @@ print(ds_jobs.columns)
 #print(ds_jobs['seniority'].unique())
 
 # Example keyword lists
-soft_skills = ['communication', 'leadership', 'collaboration', 'teamwork', 'adapt', 'problem-solving', 'critical thinking']
-technical_skills = ['SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure']
+soft_skills = ['communication', 'leadership', 'collaborate', 'team', 'adapt', 'problem solving', 'critical thinking']
+technical_skills = ['SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure', ' R,']
 
 # Add soft skill columns
 for skill in soft_skills:
@@ -42,56 +42,7 @@ print(ds_jobs['job_simp'].value_counts())
 
 
 # model
-'''
-# Create binary target variable
-ds_jobs['is_data_scientist'] = (ds_jobs['job_simp'] == 'data scientist').astype(int)
 
-from sklearn.linear_model import LogisticRegression
-
-# Features and target
-X = ds_jobs[skill_columns]
-y = ds_jobs['is_data_scientist']
-
-# Fit logistic regression model
-model = LogisticRegression()
-model.fit(X, y)
-
-# Get feature importance
-importance = pd.Series(model.coef_[0], index=skill_columns).sort_values(ascending=False)
-print("Feature importance for predicting 'Data Scientist' jobs:")
-print(importance)
-
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-
-# Features and target
-X = ds_jobs[skill_columns]
-y = ds_jobs['job_simp']  # Assume this column categorizes job titles
-
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# Fit Random Forest model
-rf = RandomForestClassifier(random_state=42)
-rf.fit(X_train, y_train)
-
-# Feature importance
-importance = pd.Series(rf.feature_importances_, index=skill_columns).sort_values(ascending=False)
-print("Skill importance across different data science jobs:")
-print(importance)
-
-# Create a binary target for "Data Scientist" jobs
-ds_jobs['is_data_scientist'] = (ds_jobs['job_simp'] == 'data scientist').astype(int)
-
-# Fit a Random Forest for this binary classification
-rf_ds = RandomForestClassifier(random_state=42)
-rf_ds.fit(X, ds_jobs['is_data_scientist'])
-
-# Feature importance for "Data Scientist" roles
-importance_ds = pd.Series(rf_ds.feature_importances_, index=skill_columns).sort_values(ascending=False)
-print("Skill importance for Data Scientist roles:")
-print(importance_ds)
-'''
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -187,38 +138,10 @@ plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
 plt.show()
-'''
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import pandas as pd
 
-# Standardize features for k-means
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
 
-# Perform k-means clustering
-kmeans = KMeans(n_clusters=3, random_state=42)
-kmeans.fit(X_scaled)
 
-# Add cluster labels to the original dataset
-ds_jobs['Cluster'] = kmeans.labels_
 
-# Analyze cluster centroids
-centroids = pd.DataFrame(kmeans.cluster_centers_, columns=X.columns)
-print("Cluster Centroids:")
-print(centroids)
-
-# Examine how many jobs fall into each cluster
-print(ds_jobs['Cluster'].value_counts())
-
-# Visualization (if dimensionality reduction applied, e.g., PCA)
-import matplotlib.pyplot as plt
-plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=kmeans.labels_, cmap='viridis', alpha=0.5)
-plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], color='red', marker='X')
-plt.title("K-means Clustering")
-plt.show()
-
-'''
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -236,7 +159,7 @@ y = ds_jobs['job_simp_encoded']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Train Random Forest
-rf = RandomForestClassifier(class_weight= 'balanced', random_state=42)
+rf = RandomForestClassifier(class_weight = {0: 3, 1: 3, 2: 1, 3: 5, 4: 5}, random_state=42)
 rf.fit(X_train, y_train)
 
 # Predict on test data
@@ -265,13 +188,77 @@ feature_importance_df = pd.DataFrame({
 print("Random Forest Feature Importance:")
 print(feature_importance_df)
 
+import shap
+import pandas as pd
+import numpy as np
+
+# Create SHAP explainer
+explainer = shap.TreeExplainer(rf)
+
+# Generate SHAP values
+shap_values = explainer.shap_values(X_test)
+
+# Debugging shapes
+print("shap_values shape:", np.array(shap_values).shape)  # Should be (n_classes, n_samples, n_features)
+print("X_test shape:", X_test.shape)                     # Should be (n_samples, n_features)
+
+# Loop through classes
+for i, class_name in enumerate(le.classes_):
+    # Select SHAP values for the current class
+    shap_class_values = shap_values[i]  # Should have shape (n_samples, n_features)
+
+    # Debug shape of the current class's SHAP values
+    print(f"Class {class_name} SHAP values shape:", shap_class_values.shape)
+    
+    # Ensure the shape matches (n_samples, n_features)
+    if shap_class_values.shape != X_test.shape:
+        print(f"Reshaping SHAP values for class {class_name}...")
+        shap_class_values = shap_class_values.T  # Likely cause is the transpose is needed
+
+    # Plot summary
+    print(f"SHAP summary for class {class_name} (Index {i}):")
+    shap.summary_plot(shap_class_values, X_test, plot_type="bar")
+
+import shap
+import pandas as pd
+import numpy as np
+
+# Create SHAP explainer
+explainer = shap.TreeExplainer(rf)
+
+# Generate SHAP values for the test set
+shap_values = explainer.shap_values(X_test)
+
+# Check shapes
+print("shap_values shape:", np.array(shap_values).shape)  # Expected: (n_classes, n_samples, n_features)
+print("X_test shape:", X_test.shape)                     # Expected: (n_samples, n_features)
+
+for i, class_name in enumerate(le.classes_):
+    print(f"Class {class_name} (Index {i}) SHAP shape:", shap_values[i].shape)
+for i in range(len(le.classes_)):
+    print(f"SHAP values for class {i} shape: {shap_values[i].shape}")
+
+# Generate SHAP summaries for each class
+for i, class_name in enumerate(le.classes_):  # `le.classes_` gives the class names from LabelEncoder
+    print(f"SHAP summary for class {class_name} (Index {i}):")
+    
+    # Extract SHAP values for the specific class
+    shap_class_values = shap_values[i]  # Shape is (n_samples, n_features)
+    
+    # Generate a summary plot for the specific class
+    shap.summary_plot(shap_class_values, X_test, plot_type="bar")
+
+
+
+
+
 
 from imblearn.over_sampling import SMOTE
 smote = SMOTE(random_state=42)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
 # Step 3: Train a Random Forest classifier on the resampled data
-rf_classifier = RandomForestClassifier(class_weight= 'balanced',random_state=42)
+rf_classifier = RandomForestClassifier(class_weight = {0: 3, 1: 3, 2: 1, 3: 5, 4: 5} ,random_state=42)
 rf_classifier.fit(X_train_resampled, y_train_resampled)
 
 # Step 4: Make predictions on the test set
