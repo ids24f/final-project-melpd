@@ -1,0 +1,35 @@
+---
+title: "Getting a Data Science Job Using Data Science"
+subtitle: "A Presentation by Melanie Desroches"
+format:
+    revealjs:
+        self-contained: true
+        slide-number: true
+        preview-links: true
+        theme: solarized
+---
+
+# Background
+
+## Data Science Jobs
+
+# Research Question
+
+## What skills are important for different data science jobs?
+
+# Data
+
+## Data
+
+# Methods
+
+## Random Forests
+
+# Discussion
+
+## What did we learn?
+
+## Possible Limitations
+
+# Thank you
+
