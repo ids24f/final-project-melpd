@@ -13,9 +13,21 @@ format:
 
 ## Data Science Jobs
 
+As the collection of data becomes more important across a variety of industries,
+the need for trained data scientists as increased. According to the US Bureau of
+Labor Statistics, there has been a 36% growth in data science jobs (compared to 
+the average job growth of 4%). But what does it take to get a data science related job?
+What are the skills that are valued in these positions?
+
 # Research Question
 
 ## What skills are important for different data science jobs?
+
+- What are the most frequent skills in data science job postings?
+- What are the most important skills for a job as a data scientist?
+- What are the most important skills for a job as a data analyst?
+- What are the most important skills for a job as a machine learning engineer?
+- What are the most important skills for a job as a data engineer?
 
 # Data
 
@@ -24,6 +36,10 @@ format:
 # Methods
 
 ## Random Forests
+
+## Results
+
+## Evaluating the Model
 
 # Discussion
 
