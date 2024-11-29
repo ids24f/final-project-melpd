@@ -40,20 +40,22 @@ data science jobs (compared to the average job growth of 4%).
 
 ## Feature Engineering
 
-- In order to answer the research question, some feature engineering needs to be 
-done to identify the skills needed within the job posting
-- I identified prevalent skills (both technical and soft skills) and created boolean 
-columns so that if the skill was mentioned in the job description, a 1 would be put 
-in that skills column
-- The skills identifies where 'python','excel', 'hadoop', 'spark', 'aws', 'tableau', 'big_data',
-communication', 'leadership', 'collaborate', 'team', 'adapt', 'problem solving', 'critical thinking',
-'SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure', and ' R,'
+- To answer the research question, feature engineering:  
+  - Identified prevalent skills in the job descriptions.  
+  - Created **boolean columns** indicating whether a skill was mentioned.  
+- The identified skills include:  
+  - **Programming Skills**: Python, SQL, Java, C++, Scala, R  
+  - **Big Data Tools**: Hadoop, Spark, AWS, Git, Linux, Azure  
+  - **Visualization Tools**: Tableau, Matlab  
+  - **Soft Skills**: Communication, leadership, collaboration, problem-solving, critical thinking  
 
 # Methods
 
 ## Random Forests
 
-
+- A **Random Forest classifier** was used to analyze the skills data.  
+- The goal was to identify the most important skills for each job type.  
+- The model evaluated the presence of skills against job titles (e.g., data scientist, analyst, machine learning engineer, data engineer, etc.).
 
 
 ## Results
