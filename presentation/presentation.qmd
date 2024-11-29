@@ -13,17 +13,17 @@ format:
 
 ## Data Science Jobs
 
-As the collection of data becomes more important across a variety of industries,
-the need for trained data scientists as increased. According to the US Bureau of
-Labor Statistics, there has been a 36% growth in data science jobs (compared to 
-the average job growth of 4%). But what does it take to get a data science related job?
-What are the skills that are valued in these positions?
+- As the collection of data becomes more important across a variety of industries,
+the need for trained data scientists as increased. 
+- According to the US Bureau of Labor Statistics, there has been a 36% growth in 
+data science jobs (compared to the average job growth of 4%).
+- What does it take to get a data science related job?
+- What are the skills that are valued in these positions?
 
 # Research Question
 
 ## What skills are important for different data science jobs?
 
-- What are the most frequent skills in data science job postings?
 - What are the most important skills for a job as a data scientist?
 - What are the most important skills for a job as a data analyst?
 - What are the most important skills for a job as a machine learning engineer?
@@ -33,19 +33,50 @@ What are the skills that are valued in these positions?
 
 ## Data
 
+- The dataset consists of job postings related to data science
+- The data set was collected from Kaggle
+- There are 660 postings in total
+- Some relevant columns are the job description and the job title
+
+## Feature Engineering
+
+- In order to answer the research question, some feature engineering needs to be 
+done to identify the skills needed within the job posting
+- I identified prevalent skills (both technical and soft skills) and created boolean 
+columns so that if the skill was mentioned in the job description, a 1 would be put 
+in that skills column
+- The skills identifies where 'python','excel', 'hadoop', 'spark', 'aws', 'tableau', 'big_data',
+communication', 'leadership', 'collaborate', 'team', 'adapt', 'problem solving', 'critical thinking',
+'SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure', and ' R,'
+
 # Methods
 
 ## Random Forests
 
+
+
+
 ## Results
 
+
+
+
 ## Evaluating the Model
+
+
+
 
 # Discussion
 
 ## What did we learn?
 
+
+
+
 ## Possible Limitations
+
+
+
 
 # Thank you
 
