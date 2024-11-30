@@ -90,7 +90,18 @@ data science jobs (compared to the average job growth of 4%).
 
 ## Evaluating the Model
 
+Classification Report:
 
+          precision    recall  f1-score   support
+
+      0       0.71      0.38      0.50        13
+      1       0.80      0.36      0.50        11
+      2       0.79      0.92      0.85        89
+      3       0.75      0.43      0.55         7
+      4       0.60      0.60      0.60        10
+  accuracy                         0.77       130
+  macro avg    0.73      0.54      0.60       130
+  weighted avg 0.77      0.77      0.75       130
 
 
 # Discussion
