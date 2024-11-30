@@ -40,7 +40,7 @@ ds_jobs = ds_jobs[~ds_jobs['job_simp'].isin(['manager', 'director'])]
 print(ds_jobs['job_simp'].value_counts())
 
 
-
+"""
 # model
 
 from sklearn.model_selection import train_test_split
@@ -138,7 +138,7 @@ plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
 plt.show()
-
+"""
 
 
 
@@ -159,7 +159,7 @@ y = ds_jobs['job_simp_encoded']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Train Random Forest
-rf = RandomForestClassifier(class_weight = {0: 3, 1: 3, 2: 1, 3: 5, 4: 5}, random_state=42)
+rf = RandomForestClassifier(class_weight = {0: 5, 1: 5, 2: 1, 3: 5, 4: 4}, random_state=42)
 rf.fit(X_train, y_train)
 
 # Predict on test data
@@ -219,39 +219,10 @@ for i, class_name in enumerate(le.classes_):
     print(f"SHAP summary for class {class_name} (Index {i}):")
     shap.summary_plot(shap_class_values, X_test, plot_type="bar")
 
-import shap
-import pandas as pd
-import numpy as np
-
-# Create SHAP explainer
-explainer = shap.TreeExplainer(rf)
-
-# Generate SHAP values for the test set
-shap_values = explainer.shap_values(X_test)
-
-# Check shapes
-print("shap_values shape:", np.array(shap_values).shape)  # Expected: (n_classes, n_samples, n_features)
-print("X_test shape:", X_test.shape)                     # Expected: (n_samples, n_features)
-
-for i, class_name in enumerate(le.classes_):
-    print(f"Class {class_name} (Index {i}) SHAP shape:", shap_values[i].shape)
-for i in range(len(le.classes_)):
-    print(f"SHAP values for class {i} shape: {shap_values[i].shape}")
-
-# Generate SHAP summaries for each class
-for i, class_name in enumerate(le.classes_):  # `le.classes_` gives the class names from LabelEncoder
-    print(f"SHAP summary for class {class_name} (Index {i}):")
-    
-    # Extract SHAP values for the specific class
-    shap_class_values = shap_values[i]  # Shape is (n_samples, n_features)
-    
-    # Generate a summary plot for the specific class
-    shap.summary_plot(shap_class_values, X_test, plot_type="bar")
 
 
 
-
-
+"""
 
 from imblearn.over_sampling import SMOTE
 smote = SMOTE(random_state=42)
@@ -279,3 +250,4 @@ feature_importance_df = pd.DataFrame({
 # Display top features
 print("Random Forest (SMOTE) Feature Importance:")
 print(feature_importance_df)
+"""
