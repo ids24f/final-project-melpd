@@ -56,12 +56,37 @@ data science jobs (compared to the average job growth of 4%).
 - A **Random Forest classifier** was used to analyze the skills data.  
 - The goal was to identify the most important skills for each job type.  
 - The model evaluated the presence of skills against job titles (e.g., data scientist, analyst, machine learning engineer, data engineer, etc.).
+- From the random forest, feature importance can identify the most important skills that predicted the job type
 
+# Results
 
-## Results
+## Most Frequently Referenced Skills
 
+- The word **team** appeared in 568 job postings 
+- **Python** is referenced in 482 job postings
+- **SQL** is referenced in 352 job postings
+- The word **communication** appears in 325 job postings
+- **Excel** is referenced in 291 job postings
 
+## Results for Analyst Jobs
 
+![Feature Importance for Analyst Roles](../images/analyst_fi.png)
+
+## Results for Data Engineer Jobs
+
+![Feature Importance for Data Engineer Roles](../images/data_engineer_fi.png)
+
+## Results for Data Scientist Jobs
+
+![Feature Importance for Data Scientist Roles](../images/data_engineer_fi.png)
+
+## Results for Machine Learning Engineer Jobs
+
+![Feature Importance for Machine Learning Engineer Roles](../images/mle_fi.png)
+
+## Results for Other Data-Related Jobs
+
+![Feature Importance for Other Data-Related Roles](../images/other_fi.png)
 
 ## Evaluating the Model
 
