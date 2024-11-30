@@ -78,7 +78,7 @@ data science jobs (compared to the average job growth of 4%).
 
 ## Results for Data Scientist Jobs
 
-![Feature Importance for Data Scientist Roles](../images/data_engineer_fi.png)
+![Feature Importance for Data Scientist Roles](../images/data_scientist_fi.png)
 
 ## Results for Machine Learning Engineer Jobs
 
@@ -108,13 +108,20 @@ Classification Report:
 
 ## What did we learn?
 
-
+- While there is a lot of overlap between different types of data science jobs,
+there is also certain skills that make each unique
+- **Python** and **SQL** is relevant in all of the jobs
+- Soft skills like commuinication and teamwork are very important
 
 
 ## Possible Limitations
 
-
-
+- The data set on Kaggle is listed at about 4 years old, which may make the data
+not as relevant to today's job market
+- I used a very naive approach to the feature engineering so 
+certain features may have been missed.
+- Due to the heavy imbalance in the dataset, it was hard to improve the model
+for more accurate results.
 
 # Thank you
 
