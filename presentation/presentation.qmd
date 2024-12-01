@@ -36,7 +36,12 @@ data science jobs (compared to the average job growth of 4%).
 - The dataset consists of job postings related to data science
 - The data set was collected from Kaggle
 - There are 660 postings in total
-- Some relevant columns are the job description and the job title
+- The following is the summary of the job titles:
+  - data scientist    447
+  - other              68
+  - analyst            55
+  - data engineer      46
+  - mle                34
 
 ## Feature Engineering
 
@@ -53,10 +58,11 @@ data science jobs (compared to the average job growth of 4%).
 
 ## Random Forests
 
-- A **Random Forest classifier** was used to analyze the skills data.  
+- A **Random Forest classifier** was used to analyze the data.  
 - The goal was to identify the most important skills for each job type.  
 - The model evaluated the presence of skills against job titles (e.g., data scientist, analyst, machine learning engineer, data engineer, etc.).
 - From the random forest, feature importance can identify the most important skills that predicted the job type
+  - Feature importance uses SHAP (SHapley Additive exPlanations) values, which measure the impact of each feature on the model's predictions.
 
 # Results
 
@@ -99,9 +105,8 @@ Classification Report:
       2       0.79      0.92      0.85        89
       3       0.75      0.43      0.55         7
       4       0.60      0.60      0.60        10
-  accuracy                         0.77       130
-  macro avg    0.73      0.54      0.60       130
-  weighted avg 0.77      0.77      0.75       130
+
+Accuracy: 0.7692307692307693
 
 
 # Discussion
