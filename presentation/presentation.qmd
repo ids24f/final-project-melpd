@@ -60,9 +60,10 @@ data science jobs (compared to the average job growth of 4%).
 
 - A **Random Forest classifier** was used to analyze the data.  
 - The goal was to identify the most important skills for each job type.  
-- The model evaluated the presence of skills against job titles (e.g., data scientist, analyst, machine learning engineer, data engineer, etc.).
+- The model evaluated the presence of skills against job titles.
 - From the random forest, feature importance can identify the most important skills that predicted the job type
-  - Feature importance uses SHAP (SHapley Additive exPlanations) values, which measure the impact of each feature on the model's predictions.
+  - SHAP (SHapley Additive exPlanations) values: measure the impact of each feature on the model's predictions.
+  - Gini Importance: consideres the overall reduction in impurity caused by each feature
 
 # Results
 
@@ -73,6 +74,10 @@ data science jobs (compared to the average job growth of 4%).
 - **SQL** is referenced in 352 job postings
 - The word **communication** appears in 325 job postings
 - **Excel** is referenced in 291 job postings
+
+## Results for the Overall Model
+
+![Feature Importance for All Roles](../images/gini_importance.png)
 
 ## Results for Analyst Jobs
 
