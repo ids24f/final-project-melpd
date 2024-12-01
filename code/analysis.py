@@ -188,6 +188,16 @@ feature_importance_df = pd.DataFrame({
 print("Random Forest Feature Importance:")
 print(feature_importance_df)
 
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+plt.barh(feature_importance_df['Feature'], feature_importance_df['Importance'], color='skyblue')
+plt.xlabel("Gini Importance")
+plt.ylabel("Feature")
+plt.title("Feature Importance (Gini)")
+plt.gca().invert_yaxis()  # Reverse the y-axis to show the most important feature at the top
+plt.show()
+
 import shap
 import pandas as pd
 import numpy as np
@@ -198,9 +208,8 @@ explainer = shap.TreeExplainer(rf)
 # Generate SHAP values
 shap_values = explainer.shap_values(X_test)
 
-# Debugging shapes
-print("shap_values shape:", np.array(shap_values).shape)  # Should be (n_classes, n_samples, n_features)
-print("X_test shape:", X_test.shape)                     # Should be (n_samples, n_features)
+print("shap_values shape:", np.array(shap_values).shape)
+print("X_test shape:", X_test.shape)
 
 # Loop through classes
 for i, class_name in enumerate(le.classes_):
@@ -213,7 +222,7 @@ for i, class_name in enumerate(le.classes_):
     # Ensure the shape matches (n_samples, n_features)
     if shap_class_values.shape != X_test.shape:
         print(f"Reshaping SHAP values for class {class_name}...")
-        shap_class_values = shap_class_values.T  # Likely cause is the transpose is needed
+        shap_class_values = shap_class_values.T
 
     # Plot summary
     print(f"SHAP summary for class {class_name} (Index {i}):")
@@ -222,14 +231,14 @@ for i, class_name in enumerate(le.classes_):
 
 
 
-"""
+'''
 
 from imblearn.over_sampling import SMOTE
 smote = SMOTE(random_state=42)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
 # Step 3: Train a Random Forest classifier on the resampled data
-rf_classifier = RandomForestClassifier(class_weight = {0: 3, 1: 3, 2: 1, 3: 5, 4: 5} ,random_state=42)
+rf_classifier = RandomForestClassifier(class_weight = {0: 5, 1: 5, 2: 1, 3: 5, 4: 4}, random_state=42)
 rf_classifier.fit(X_train_resampled, y_train_resampled)
 
 # Step 4: Make predictions on the test set
@@ -250,4 +259,67 @@ feature_importance_df = pd.DataFrame({
 # Display top features
 print("Random Forest (SMOTE) Feature Importance:")
 print(feature_importance_df)
-"""
+
+from imblearn.over_sampling import ADASYN
+adasyn = ADASYN(random_state=42)
+X_train_resampled, y_train_resampled = adasyn.fit_resample(X_train, y_train)
+rf_classifier = RandomForestClassifier(class_weight = {0: 5, 1: 5, 2: 1, 3: 5, 4: 4}, random_state=42)
+rf_classifier.fit(X_train_resampled, y_train_resampled)
+
+# Step 4: Make predictions on the test set
+y_pred = rf_classifier.predict(X_test)
+
+# Step 5: Evaluate the model's performance
+print('adasyn')
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+importances = rf_classifier.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': importances
+}).sort_values(by='Importance', ascending=False)
+
+# Display top features
+print("Random Forest (ADSYN) Feature Importance:")
+print(feature_importance_df)
+
+import xgboost as xgb
+from sklearn.metrics import accuracy_score, classification_report
+from imblearn.over_sampling import ADASYN
+from sklearn.model_selection import train_test_split
+
+# Initialize XGBoost classifier
+xgb_classifier = xgb.XGBClassifier(
+    objective='multi:softmax',  # Multi-class classification
+    num_class=5,  # Number of classes (adjust as needed)
+    random_state=42,
+    scale_pos_weight=1  # Adjust this based on class imbalance (optional)
+)
+
+# Train the model
+xgb_classifier.fit(X_train_resampled, y_train_resampled)
+
+# Make predictions
+y_pred = xgb_classifier.predict(X_test)
+
+# Evaluate the model
+print('XGBoost Model Performance:')
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+# Get feature importances
+importances = xgb_classifier.feature_importances_
+
+# Create a DataFrame for easy interpretation
+feature_importance_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': importances
+}).sort_values(by='Importance', ascending=False)
+
+# Display top features
+print("XGBoost Feature Importance:")
+print(feature_importance_df)
+'''
