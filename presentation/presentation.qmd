@@ -33,9 +33,8 @@ data science jobs (compared to the average job growth of 4%).
 
 ## Data
 
-- The dataset consists of job postings related to data science
+- The dataset consists of 660 job postings related to data science
 - The data set was collected from Kaggle
-- There are 660 postings in total
 - The following is the summary of the job titles:
   - data scientist    447
   - other              68
@@ -59,7 +58,7 @@ data science jobs (compared to the average job growth of 4%).
 ## Random Forests
 
 - A **Random Forest classifier** was used to analyze the data.  
-- The goal was to identify the most important skills for each job type.  
+- To handle class imbalance, I used class weights within the model.
 - The model evaluated the presence of skills against job titles.
 - From the random forest, feature importance can identify the most important skills that predicted the job type
   - SHAP (SHapley Additive exPlanations) values: measure the impact of each feature on the model's predictions.
@@ -99,30 +98,19 @@ data science jobs (compared to the average job growth of 4%).
 
 ![Feature Importance for Other Data-Related Roles](../images/other_fi.png)
 
-## Evaluating the Model
+# Evaluating the Model
 
-Classification Report:
+Overall, the model achieved an accuracy of 76.9%.
 
-          precision    recall  f1-score   support
+## Summary of the Classification Report
 
-      0       0.71      0.38      0.50        13
-      1       0.80      0.36      0.50        11
-      2       0.79      0.92      0.85        89
-      3       0.75      0.43      0.55         7
-      4       0.60      0.60      0.60        10
-
-Accuracy: 0.7692307692307693
-
+- Analyst: Precision and recall were both low (precision: 0.71, recall: 0.38).
+- Data Engineer: Precision was good (0.80), but recall was poor (0.36), suggesting the model was selective but missed many true instances of this class.
+- Data Scientist: This was the best-performing class, with high precision (0.79), recall (0.92), and F1-score (0.85). 
+- MLE: Performance was moderate, with a precision of 0.75 and a recall of 0.43, leading to an F1-score of 0.55.
+- Other: The model performed equally in precision and recall (0.60 for both), with a balanced F1-score of 0.60.
 
 # Discussion
-
-## What did we learn?
-
-- While there is a lot of overlap between different types of data science jobs,
-there is also certain skills that make each unique
-- **Python** and **SQL** is relevant in all of the jobs
-- Soft skills like commuinication and teamwork are very important
-
 
 ## Possible Limitations
 
@@ -132,6 +120,16 @@ not as relevant to today's job market
 certain features may have been missed.
 - Due to the heavy imbalance in the dataset, it was hard to improve the model
 for more accurate results.
+
+## What did we learn?
+
+- While there is a lot of overlap between different types of data science jobs,
+there is also certain skills that make each unique
+- **Python**, **SQL**, **Communication** are important for all of the jobs
+- Certain soft skills are more valuable to certain jobs (for example, data scientists
+ and collaboration, analysts and teamwork, data engineers and problem-solving, 
+ machine learning and leadership)
+
 
 # Thank you
 
