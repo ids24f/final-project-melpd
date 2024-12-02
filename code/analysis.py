@@ -8,7 +8,6 @@ print(ds_jobs.columns)
 #print(ds_jobs.isnull().sum())
 #print(ds_jobs['seniority'].unique())
 
-# Example keyword lists
 soft_skills = ['communication', 'leadership', 'collaborate', 'team', 'adapt', 'problem solving', 'critical thinking']
 technical_skills = ['SQL', 'Java', 'C\+\+', 'Scala', 'SAS', 'Git', 'Linux', 'Matlab', 'Azure', ' R,']
 
@@ -29,14 +28,11 @@ skill_columns = soft_skills + technical_skills  + ['python',
 # Count the number of rows where each skill is mentioned
 skill_counts = ds_jobs[skill_columns].sum()
 
-# Display the counts
 print(skill_counts)
 
 #print(ds_jobs.dtypes)
-# Filter out 'manager' and 'director' rows
 ds_jobs = ds_jobs[~ds_jobs['job_simp'].isin(['manager', 'director'])]
 
-# Verify the updated dataset
 print(ds_jobs['job_simp'].value_counts())
 
 
@@ -147,33 +143,27 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, accuracy_score
 
-# Encode the target variable
 le = LabelEncoder()
 ds_jobs['job_simp_encoded'] = le.fit_transform(ds_jobs['job_simp'])
 
-# Define features (X) and target (y)
 X = ds_jobs[skill_columns]
 y = ds_jobs['job_simp_encoded']
 
-# Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Train Random Forest
 rf = RandomForestClassifier(class_weight = {0: 5, 1: 5, 2: 1, 3: 5, 4: 4}, random_state=42)
 rf.fit(X_train, y_train)
 
-# Predict on test data
 y_pred = rf.predict(X_test)
 
-# Evaluate
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Classification Report:\n", classification_report(y_test, y_pred))
 
-# Decode predictions back to original labels if needed
 y_pred_labels = le.inverse_transform(y_pred)
 
 print(ds_jobs['job_simp'].unique())
-# Assuming your dataframe is named df and the column is 'job_simp'
+
 job_counts = ds_jobs['job_simp'].value_counts()
 
 print(job_counts)
@@ -184,7 +174,7 @@ feature_importance_df = pd.DataFrame({
     'Importance': importances
 }).sort_values(by='Importance', ascending=False)
 
-# Display top features
+
 print("Random Forest Feature Importance:")
 print(feature_importance_df)
 
@@ -195,36 +185,28 @@ plt.barh(feature_importance_df['Feature'], feature_importance_df['Importance'], 
 plt.xlabel("Gini Importance")
 plt.ylabel("Feature")
 plt.title("Feature Importance (Gini)")
-plt.gca().invert_yaxis()  # Reverse the y-axis to show the most important feature at the top
+plt.gca().invert_yaxis()
 plt.show()
 
 import shap
 import pandas as pd
 import numpy as np
 
-# Create SHAP explainer
+
 explainer = shap.TreeExplainer(rf)
 
-# Generate SHAP values
 shap_values = explainer.shap_values(X_test)
 
 print("shap_values shape:", np.array(shap_values).shape)
 print("X_test shape:", X_test.shape)
 
-# Loop through classes
 for i, class_name in enumerate(le.classes_):
-    # Select SHAP values for the current class
-    shap_class_values = shap_values[i]  # Should have shape (n_samples, n_features)
-
-    # Debug shape of the current class's SHAP values
+    shap_class_values = shap_values[i]
     print(f"Class {class_name} SHAP values shape:", shap_class_values.shape)
-    
-    # Ensure the shape matches (n_samples, n_features)
+
     if shap_class_values.shape != X_test.shape:
         print(f"Reshaping SHAP values for class {class_name}...")
         shap_class_values = shap_class_values.T
-
-    # Plot summary
     print(f"SHAP summary for class {class_name} (Index {i}):")
     shap.summary_plot(shap_class_values, X_test, plot_type="bar")
 
